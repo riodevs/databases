@@ -6,33 +6,33 @@ USE control_db
 GO
 /*	
 	Tabela para o painel de acompanhamento incidente. Com id por registro/entrada,
-	indicadores de processamento das rotinas, registro de início e fim opcional, 
+	indicadores de processamento das rotinas, registro de inÃ­cio e fim opcional, 
 	data de entrada do registro.
 */
 CREATE TABLE incident_tb (
 	 incident_id	INT IDENTITY(1,1)	NOT NULL
-	,job_id			INT					NOT NULL
-	,status_id		CHAR(1)				NOT NULL
-	,processing_dt	DATETIME			NOT NULL
-	,begin_time		DATETIME			NULL
-	,end_time		DATETIME			NULL
-	,reg_entry		DATETIME			NOT NULL
+	,job_id		INT			NOT NULL
+	,status_id	CHAR(1)			NOT NULL
+	,processing_dt	DATETIME		NOT NULL
+	,begin_time	DATETIME		NULL
+	,end_time	DATETIME		NULL
+	,reg_entry	DATETIME		NOT NULL
 )
 GO
---	Tabela de domínio dos status. Sucesso, falha e não processado.
+--	Tabela de domÃ­nio dos status. Sucesso, falha e nÃ£o processado.
 CREATE TABLE status_dom_tb (
-	 status_id		CHAR(1)				NOT NULL
-	,desc_status	VARCHAR(30)			NOT NULL
-	,last_update	DATETIME			NOT NULL
+	 status_id	CHAR(1)			NOT NULL
+	,desc_status	VARCHAR(30)		NOT NULL
+	,last_update	DATETIME		NOT NULL
 CONSTRAINT pk_status PRIMARY KEY (status_id))
 GO
---	Tabela de domínio dos jobs, assim como frequência de execução para uma visão geral apenas.
+--	Tabela de domÃ­nio dos jobs, assim como frequÃªncia de execuÃ§Ã£o para uma visÃ£o geral apenas.
 CREATE TABLE job_dom_tb (
-	 job_id			INT					NOT NULL
-	,desc_job		VARCHAR(100)		NOT NULL
-	,frequency		CHAR(5)				NULL --DAY, WEEK, MONTH, YEAR
-	,times			SMALLINT			NULL
-	,last_update	DATETIME			NOT NULL
+	 job_id		INT			NOT NULL
+	,desc_job	VARCHAR(100)		NOT NULL
+	,frequency	CHAR(5)			NULL --DAY, WEEK, MONTH, YEAR
+	,times		SMALLINT		NULL
+	,last_update	DATETIME		NOT NULL
 CONSTRAINT pk_job PRIMARY KEY (job_id))
 GO
 ALTER TABLE incident_tb
@@ -42,11 +42,11 @@ ALTER TABLE incident_tb
 ADD CONSTRAINT fk_status_incident
 FOREIGN KEY (status_id) REFERENCES status_dom_tb(status_id)
 GO
---	Carga na tabela de domínio dos status
+--	Carga na tabela de domÃ­nio dos status
 INSERT INTO status_dom_tb VALUES ('0', 'Success'	, GETDATE())
 INSERT INTO status_dom_tb VALUES ('1', 'Error'		, GETDATE())
 INSERT INTO status_dom_tb VALUES ('2', 'Unprocessed', GETDATE())
---	Carga na tabela de domínio dos jobs
+--	Carga na tabela de domÃ­nio dos jobs
 INSERT INTO job_dom_tb VALUES (1, 'Rotina 1', 'DAY'  , 1, GETDATE())
 INSERT INTO job_dom_tb VALUES (2, 'Rotina 2', 'WEEK' , 1, GETDATE())
 INSERT INTO job_dom_tb VALUES (3, 'Rotina 3', 'DAY'  , 2, GETDATE())
